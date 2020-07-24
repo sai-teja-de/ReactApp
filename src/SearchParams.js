@@ -25,6 +25,7 @@ const SearchParams =() => {
         pet.breeds(animal).then(({ breeds }) => {
             const breedStrings = breeds.map(({ name }) => name);
             updateBreeds(breedStrings);
+        // eslint-disable-next-line no-console
         },console.error);
     },[animal,updateBreeds,updateBreed]);
 
