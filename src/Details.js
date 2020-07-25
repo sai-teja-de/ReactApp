@@ -34,7 +34,7 @@ class Details extends React.Component {
             return <h1> loading ... </h1>
         }
     
-        const {animal, breed, location, media, description, name, url, showModal}  = this.state;
+        const {animal, breed, location, media, description, name, showModal}  = this.state;
 
         return (
             <div className="details">
