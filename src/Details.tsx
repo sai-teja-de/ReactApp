@@ -1,18 +1,32 @@
 import React, { lazy } from "react";
-import { navigate } from "@reach/router";
-import pet from "@frontendmasters/pet";
+import { navigate, RouteComponentProps } from "@reach/router";
+import pet, { Photo, AnimalResponse } from "@frontendmasters/pet";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
 
 const Modal = lazy(() => import("./Modal"));
 
-class Details extends React.Component {
-    state = { loading: true, showModal: false };
+class Details extends React.Component <RouteComponentProps<{ id: string}>>{
+    public state = { 
+        loading: true,
+        showModal: false,
+        name: "",
+        animal: "",
+        location: "",
+        description: "",
+        media: [] as Photo[],
+        url: "",
+        breed: "" 
+    };
 
-    componentDidMount() {
-        pet.animal(this.props.id)
-        .then(({ animal }) => {
+    public componentDidMount() {
+        if(!this.props.id) {
+            navigate("/");
+            return;
+        }
+        pet.animal(+this.props.id)
+        .then(({ animal }:AnimalResponse) => {
             this.setState({
                 url: animal.url,
                 name: animal.name,
@@ -23,14 +37,14 @@ class Details extends React.Component {
                 breed: animal.breeds.primary,
                 loading: false
             });
-        }).catch(err => this.setState({ error:err }));
+        }).catch((err: Error) => this.setState({ error:err }));
     }
 
-    toggleModal = () => this.setState({ showModal: !this.state.showModal });
-    adopt = () => navigate(this.state.url);
+    public toggleModal = () => this.setState({ showModal: !this.state.showModal });
+    public adopt = () => navigate(this.state.url);
 
 
-    render() {
+    public render() {
         if (this.state.loading) {
             return <h1> loading ... </h1>
         }
@@ -69,7 +83,7 @@ class Details extends React.Component {
     }
 }
 
-export default function DetailsErrorBoundary(props) {
+export default function DetailsErrorBoundary(props:RouteComponentProps<{ id:string }>) {
     return (
         <ErrorBoundary>
             <Details {...props} />

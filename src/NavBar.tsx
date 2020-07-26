@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { Link } from "@reach/router";
 import { css, keyframes  } from "@emotion/core";
 import colors from "./colors";
@@ -9,7 +9,7 @@ const Spin = keyframes`
     }
 `;
 
-const NavBar = () => (
+const NavBar:FunctionComponent = () => (
     <header css={css`
     background-color: ${colors.secondary};
     position: sticky;
@@ -28,7 +28,7 @@ const NavBar = () => (
         animation: 1s ${Spin} linear;
         font-size: 55px;
         `} 
-        aria-label="logo" role="img">🐕</span>
+        aria-label="logo" role="img"></span>
     </header>
 )
 export default NavBar;
