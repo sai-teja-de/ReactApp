@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import pet, { ANIMALS } from "@frontendmasters/pet";
 import useDropdown from "./useDropdown";
 import Results from "./Results";
-import ThemeContext from "./ThemeContext";
+import { connect } from "react-redux";
+import changeTheme from "./reducers/changeTheme";
+import changeLocation from "./reducers/changeLocation";
 
 
-const SearchParams = () => {
-  const [theme, setTheme] = useContext(ThemeContext);
-  const [location, updateLocation] = useState("Seattle, WA");
+const SearchParams = props => {
   const [breeds, updateBreeds] = useState([]);
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
   const [breed, BreedDropdown, updateBreed] = useDropdown("Breed", "", breeds);
@@ -15,7 +15,7 @@ const SearchParams = () => {
 
   const requestsPets = async () => {
     const { animals } = await pet.animals({
-      location,
+      location: props.location,
       breed,
       type: animal,
     });
@@ -34,7 +34,7 @@ const SearchParams = () => {
 
   return (
     <div className="search-params">
-      <h1>{location}</h1>
+      <h1>{props.location}</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -45,17 +45,17 @@ const SearchParams = () => {
           Location
           <input
             id="location"
-            value={location}
+            value={props.location}
             placeholder="Location"
-            onChange={(e) => updateLocation(e.target.value)}
+            onChange={(e) => props.updateLocation(e.target.value)}
           />
         </label>
         <AnimalDropdown />
         <BreedDropdown />
         <label htmlFor="location">
           Theme
-          <select value={theme} onChange={e => setTheme(e.target.value)}
-          onBlur={e => setTheme(e.target.value)}
+          <select value={props.theme} onChange={e => props.setTheme(e.target.value)}
+          onBlur={e => props.setTheme(e.target.value)}
           >
             <option value="peru">Peru</option>
             <option value="darkblue">Dark blue</option>
@@ -63,7 +63,7 @@ const SearchParams = () => {
             <option value="mediumorchid">Medium Orchid</option>
           </select>
         </label>
-        <button style={{ backgroundColor: theme}}>Submit</button>
+        <button style={{ backgroundColor: props.theme}}>Submit</button>
       </form>
 
       <Results pets={pets} />
@@ -71,4 +71,14 @@ const SearchParams = () => {
   );
 };
 
-export default SearchParams;
+const mapStateToProps = ({ theme, location}) => ({
+  theme,
+  location
+});
+
+const mapDispatchToProps = dispatch => ({
+  setTheme: theme => dispatch(changeTheme(theme)),
+  updateLocation: location => dispatch(changeLocation(location))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps) (SearchParams);

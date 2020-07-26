@@ -11,7 +11,7 @@ const Spin = keyframes`
 
 const NavBar = () => (
     <header css={css`
-    background-color: ${colors.dark};
+    background-color: ${colors.secondary};
     position: sticky;
     top: 0;
     z-index: 10;
@@ -25,10 +25,10 @@ const NavBar = () => (
         to="/">Adopt Me!</Link>
         <span css={css`
         display: inline-block;
-        animation: 5s ${Spin} linear;
+        animation: 1s ${Spin} linear;
         font-size: 60px;
         `} 
-        aria-label="logo" role="img">🐩</span>
+        aria-label="logo" role="img">🐕</span>
     </header>
 )
 export default NavBar;

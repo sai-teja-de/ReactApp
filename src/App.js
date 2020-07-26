@@ -1,16 +1,16 @@
-import React, { StrictMode,useState } from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { Router } from "@reach/router";
 import SearchParams from "./SearchParams";
 import Details from "./Details";
-import ThemeContext from "./ThemeContext";
 import NavBar from "./NavBar";
+import { Provider } from "react-redux";
+import store from "./store";
 
 
 const App = () => {
-  const theme = useState("darkblue");
   return (
-    <ThemeContext.Provider value={theme}>
+    <Provider store={store}>
       <StrictMode>
         <div>
           <NavBar />
@@ -20,7 +20,7 @@ const App = () => {
           </Router>
         </div>
       </StrictMode>
-    </ThemeContext.Provider>
+    </Provider>
   );
 };
 
